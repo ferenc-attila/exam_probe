@@ -1,10 +1,12 @@
 package exam;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "birds")
-public class Bird {
+@Table(name = "families")
+public class Family {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,18 +18,26 @@ public class Bird {
     @Column(name = "hun_name")
     private String hungarianName;
 
-    public Bird() {
+    @OneToMany(mappedBy = "family", cascade = CascadeType.PERSIST)
+    private Set<BirdSpecies> species = new HashSet<>();
+
+    public Family() {
     }
 
-    public Bird(String scientificName, String hungarianName) {
+    public Family(String scientificName, String hungarianName) {
         this.scientificName = scientificName;
         this.hungarianName = hungarianName;
     }
 
-    public Bird(Long id, String scientificName, String hungarianName) {
+    public Family(Long id, String scientificName, String hungarianName) {
         this.id = id;
         this.scientificName = scientificName;
         this.hungarianName = hungarianName;
+    }
+
+    public void addBirdSpecies(BirdSpecies birdSpecies) {
+        this.species.add(birdSpecies);
+        birdSpecies.setFamily(this);
     }
 
     public Long getId() {
@@ -52,5 +62,13 @@ public class Bird {
 
     public void setHungarianName(String hungarianName) {
         this.hungarianName = hungarianName;
+    }
+
+    public Set<BirdSpecies> getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(Set<BirdSpecies> species) {
+        this.species = species;
     }
 }
