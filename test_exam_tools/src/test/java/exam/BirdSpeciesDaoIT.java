@@ -67,4 +67,12 @@ class BirdSpeciesDaoIT {
         assertThat(result).hasSize(10)
                 .contains("Falco vespertinus", "Lanius collurio", "Erithacus rubecola");
     }
+
+    @Test
+    @DisplayName("Tests find species by hungarian name")
+    void findSpeciesByHungarianNameTest() {
+        BirdSpecies result = dao.findSpeciesByHungarianName("vörös vércse");
+
+        assertThat(result.getScientificName()).isEqualTo("Falco tinnunculus");
+    }
 }
