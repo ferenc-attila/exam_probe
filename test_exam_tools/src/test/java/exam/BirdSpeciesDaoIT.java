@@ -58,4 +58,13 @@ class BirdSpeciesDaoIT {
                 .extracting(SpeciesDataDTO::getHungarianName)
                 .contains("kerecsen", "kis őrgébics", "vörösbegy", "kék vércse");
     }
+
+    @Test
+    @DisplayName("Tests listing scientific names of all bird species")
+    void listAllSpeciesScientificNameTest() {
+        List<String> result = dao.listAllSpeciesScientificName();
+
+        assertThat(result).hasSize(10)
+                .contains("Falco vespertinus", "Lanius collurio", "Erithacus rubecola");
+    }
 }

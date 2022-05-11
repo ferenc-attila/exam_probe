@@ -63,4 +63,17 @@ public class BirdSpeciesDao {
         }
         return result;
     }
+
+    public List<String> listAllSpeciesScientificName() {
+        EntityManager em = factory.createEntityManager();
+        List<String> result = new ArrayList<>();
+        try {
+            result.addAll(em.createQuery("select b from BirdSpecies b",
+                            BirdSpecies.class)
+                    .getResultStream().map(BirdSpecies::getScientificName).toList());
+        } finally {
+            em.close();
+        }
+        return result;
+    }
 }
