@@ -2,6 +2,9 @@ package exam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,6 +77,18 @@ public class BirdSpeciesDao {
         } finally {
             em.close();
         }
+        return result;
+    }
+
+    public BirdSpecies findSpeciesByHungarianName(String hungarianName) {
+        EntityManager em = factory.createEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<BirdSpecies> query = cb.createQuery(BirdSpecies.class);
+        Root<BirdSpecies> obs = query.from(BirdSpecies.class);
+        query.select(obs)
+                .where(cb.equal(obs.get("hungarianName"), hungarianName));
+        BirdSpecies result = em.createQuery(query).getSingleResult();
+        em.close();
         return result;
     }
 }
